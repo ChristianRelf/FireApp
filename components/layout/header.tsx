@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { logout } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
-import { Code, User, Settings, LogOut, Book } from 'lucide-react';
+import { Shield, User, Settings, LogOut, Users, Award, Calendar } from 'lucide-react';
 import { isDemoMode } from '@/lib/firebase';
 
 export default function Header() {
@@ -31,53 +31,71 @@ export default function Header() {
   };
 
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50">
       <div className="w-full max-w-[1920px] mx-auto px-8 lg:px-16 xl:px-24">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <Code className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl">Your App</span>
-            {isDemoMode && (
-              <Badge variant="outline" className="ml-2 text-xs">
-                Template
-              </Badge>
-            )}
+          <Link href="/" className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <span className="font-bold text-xl text-slate-900">JROTC Command</span>
+              {isDemoMode && (
+                <Badge variant="outline" className="ml-2 text-xs">
+                  Demo
+                </Badge>
+              )}
+            </div>
           </Link>
 
-          <nav className="flex items-center space-x-8 text-sm font-medium">
+          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
             <Link 
               href="/" 
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
+              className="transition-colors hover:text-blue-600 text-slate-600"
             >
               Home
             </Link>
             {user && (
-              <Link 
-                href="/dashboard" 
-                className="transition-colors hover:text-foreground/80 text-foreground/60"
-              >
-                Dashboard
-              </Link>
+              <>
+                <Link 
+                  href="/dashboard" 
+                  className="transition-colors hover:text-blue-600 text-slate-600"
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  href="/cadets" 
+                  className="transition-colors hover:text-blue-600 text-slate-600"
+                >
+                  Cadets
+                </Link>
+                <Link 
+                  href="/units" 
+                  className="transition-colors hover:text-blue-600 text-slate-600"
+                >
+                  Units
+                </Link>
+                <Link 
+                  href="/awards" 
+                  className="transition-colors hover:text-blue-600 text-slate-600"
+                >
+                  Awards
+                </Link>
+              </>
             )}
-            <Link 
-              href="#" 
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              Features
-            </Link>
           </nav>
 
           <div className="flex items-center space-x-4">
             {loading ? (
-              <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
+              <div className="h-8 w-8 animate-pulse rounded-full bg-slate-200" />
             ) : user ? (
               <div className="flex items-center space-x-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost\" className="relative h-8 w-8 rounded-full">
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
                         <AvatarImage src={user.photoURL || ''} alt={user.displayName || user.email} />
-                        <AvatarFallback>
+                        <AvatarFallback className="bg-blue-100 text-blue-600">
                           {user.displayName ? user.displayName[0].toUpperCase() : user.email[0].toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -89,12 +107,12 @@ export default function Header() {
                         {user.displayName && (
                           <p className="font-medium">{user.displayName}</p>
                         )}
-                        <p className="w-[200px] truncate text-sm text-muted-foreground">
+                        <p className="w-[200px] truncate text-sm text-slate-600">
                           {user.email}
                         </p>
                         {isDemoMode && (
                           <Badge variant="secondary" className="text-xs w-fit">
-                            Template User
+                            Demo User
                           </Badge>
                         )}
                       </div>
@@ -112,9 +130,24 @@ export default function Header() {
                         Dashboard
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Book className="mr-2 h-4 w-4" />
-                      Documentation
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/cadets">
+                        <Users className="mr-2 h-4 w-4" />
+                        Manage Cadets
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/awards">
+                        <Award className="mr-2 h-4 w-4" />
+                        Awards System
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/events">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Events
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>
@@ -129,8 +162,8 @@ export default function Header() {
                 <Button asChild variant="ghost">
                   <Link href="/login">Sign In</Link>
                 </Button>
-                <Button asChild>
-                  <Link href="/signup">Sign Up</Link>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Link href="/signup">Join Corps</Link>
                 </Button>
               </div>
             )}
