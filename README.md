@@ -6,7 +6,7 @@ A production-ready starter template for building modern web applications with Ne
 
 1. **Clone and Install**:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/ChristianRelf/FireApp
 cd your-project-name
 npm install
 ```
